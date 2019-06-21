@@ -2,40 +2,67 @@ import { Project } from './../../projects/project.model';
 import { Action } from '@ngrx/store';
 export enum ProjectsActionTypes {
   ProjectSelect = '[Projects] Select',
+  ProjectsLoad = '[Projects] Load',
+  ProjectsLoaded = '[Projects] Loaded',
   ProjectCreate = '[Projects] Create',
-  ProjectsIndex = '[Projects] Index',
+  ProjectCreated = '[Projects] Created',
   ProjectUpdate = '[Projects] Update',
-  ProjectDelete = '[Projects] Delete'
+  ProjectUpdated = '[Projects] Updated',
+  ProjectDelete = '[Projects] Delete',
+  ProjectDeleted = '[Projects] Deleted'
 }
 
 export class ProjectSelect implements Action {
   readonly type = ProjectsActionTypes.ProjectSelect;
-  constructor(private payload: Project) {}
+  constructor(public payload: Project) {}
 }
 
-export class ProjectsIndex implements Action {
-  readonly type = ProjectsActionTypes.ProjectsIndex;
-  constructor(private payload: Project[]) {}
+export class ProjectsLoad implements Action {
+  readonly type = ProjectsActionTypes.ProjectsLoad;
+}
+
+export class ProjectsLoaded implements Action {
+  readonly type = ProjectsActionTypes.ProjectsLoaded;
+  constructor(public payload: Project[]) {}
 }
 
 export class ProjectCreate implements Action {
   readonly type = ProjectsActionTypes.ProjectCreate;
-  constructor(private payload: Project) {}
+  constructor(public payload: Project) {}
+}
+
+export class ProjectCreated implements Action {
+  readonly type = ProjectsActionTypes.ProjectCreated;
+  constructor(public payload: Project) {}
 }
 
 export class ProjectUpdate implements Action {
   readonly type = ProjectsActionTypes.ProjectUpdate;
-  constructor(private payload: Project) {}
+  constructor(public payload: Project) {}
+}
+
+export class ProjectUpdated implements Action {
+  readonly type = ProjectsActionTypes.ProjectUpdated;
+  constructor(public payload: Project) {}
 }
 
 export class ProjectDelete implements Action {
   readonly type = ProjectsActionTypes.ProjectDelete;
-  constructor(private payload: Project) {}
+  constructor(public payload: Project) {}
+}
+
+export class ProjectDeleted implements Action {
+  readonly type = ProjectsActionTypes.ProjectDeleted;
+  constructor(public payload: Project) {}
 }
 
 export type ProjectsActions =
   | ProjectCreate
+  | ProjectCreated
   | ProjectSelect
   | ProjectUpdate
+  | ProjectUpdated
   | ProjectDelete
-  | ProjectsIndex;
+  | ProjectDeleted
+  | ProjectsLoad
+  | ProjectsLoaded;

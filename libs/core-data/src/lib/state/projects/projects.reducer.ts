@@ -51,7 +51,7 @@ export function projectsReducer(state = initialState, action): ProjectsState {
   switch (action.type) {
     case ProjectsActionTypes.ProjectSelect:
       return Object.assign({}, state, { selectedProjectId: action.payload });
-    case ProjectsActionTypes.ProjectsIndex:
+    case ProjectsActionTypes.ProjectsLoaded:
       return adapter.addMany(action.payload, state);
     case ProjectsActionTypes.ProjectCreate:
       return adapter.addOne(action.payload, state);
@@ -63,3 +63,11 @@ export function projectsReducer(state = initialState, action): ProjectsState {
       return state;
   }
 }
+
+export const getSelectedProjectId = (state: ProjectsState) =>
+  state.selectedProjectId;
+
+const { selectIds, selectEntities, selectAll } = adapter.getSelectors();
+export const selectProjectIds = selectIds;
+export const selectProjectEntities = selectEntities;
+export const selectAllProjects = selectAll;

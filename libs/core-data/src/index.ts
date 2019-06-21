@@ -18,5 +18,7 @@ export {
   ProjectDelete,
   ProjectUpdate,
   ProjectSelect,
-  ProjectsIndex
+  ProjectsLoad
 } from './lib/state/projects/projects.actions';
+
+export { selectAllProjects } from './lib/state';
