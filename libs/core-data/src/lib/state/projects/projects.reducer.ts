@@ -29,14 +29,6 @@ export const initialProjects: Project[] = [
   }
 ];
 
-const createProject = (projects, project) => [...projects, project];
-const updateProject = (projects, project) =>
-  projects.map(p => {
-    return p.id === project.id ? Object.assign({}, project) : p;
-  });
-const deleteProject = (projects, project) =>
-  projects.filter(w => project.id !== w.id);
-
 export interface ProjectsState extends EntityState<Project> {
   selectedProjectId: string | null;
 }

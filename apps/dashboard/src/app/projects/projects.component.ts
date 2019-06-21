@@ -4,26 +4,10 @@ import { Component, OnInit } from '@angular/core';
 import {
   Customer,
   Project,
-  ProjectsService,
   NotificationsService,
   CustomersService,
-  ProjectsState,
-  ProjectCreate,
-  ProjectUpdate,
-  ProjectDelete,
-  ProjectsLoad,
-  selectAllProjects
+  ProjectsFacade
 } from '@workshop/core-data';
-import { Store, select } from '@ngrx/store';
-
-const emptyProject: Project = {
-  id: null,
-  title: '',
-  details: '',
-  percentComplete: 0,
-  approved: false,
-  customerId: null
-};
 
 @Component({
   selector: 'app-projects',
@@ -33,15 +17,15 @@ const emptyProject: Project = {
 export class ProjectsComponent implements OnInit {
   projects$: Observable<Project[]>;
   customers$: Observable<Customer[]>;
-  currentProject: Project;
+  currentProject$: Observable<Project>;
 
   constructor(
-    private projectsService: ProjectsService,
     private customerService: CustomersService,
-    private store: Store<ProjectsState>,
+    private facade: ProjectsFacade,
     private ns: NotificationsService
   ) {
-    this.projects$ = store.pipe(select(selectAllProjects));
+    this.projects$ = facade.projects$;
+    this.currentProject$ = facade.currentProject$;
   }
 
   ngOnInit() {
@@ -51,11 +35,11 @@ export class ProjectsComponent implements OnInit {
   }
 
   resetCurrentProject() {
-    this.currentProject = emptyProject;
+    this.facade.selectProject(null);
   }
 
   selectProject(project) {
-    this.currentProject = project;
+    this.facade.selectProject(project.id);
   }
 
   cancel(project) {
@@ -67,7 +51,7 @@ export class ProjectsComponent implements OnInit {
   }
 
   getProjects() {
-    this.store.dispatch(new ProjectsLoad());
+    this.facade.getProjects();
   }
 
   saveProject(project) {
@@ -79,17 +63,17 @@ export class ProjectsComponent implements OnInit {
   }
 
   createProject(project) {
-    this.store.dispatch(new ProjectCreate(project));
+    this.facade.createProject(project);
     this.ns.emit('Project created!');
   }
 
   updateProject(project) {
-    this.store.dispatch(new ProjectUpdate(project));
+    this.facade.updateProject(project);
     this.ns.emit('Project saved!');
   }
 
   deleteProject(project) {
-    this.store.dispatch(new ProjectDelete(project.id));
+    this.facade.deleteProject(project);
     this.ns.emit('Project deleted!');
   }
 }

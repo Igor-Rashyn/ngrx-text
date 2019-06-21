@@ -6,6 +6,7 @@ import {
 import * as fromProjects from './projects/projects.reducer';
 
 import * as fromCustomers from './customers/customers.reducer';
+import { Project } from '../projects/project.model';
 
 export interface AppState {
   customers: fromCustomers.CustomersState;
@@ -26,9 +27,30 @@ export const selectProjectIds = createSelector(
   fromProjects.selectProjectIds
 );
 
+export const selectCurrentProjectId = createSelector(
+  selectProjectsState,
+  fromProjects.getSelectedProjectId
+);
 export const selectProjectEntities = createSelector(
   selectProjectsState,
   fromProjects.selectProjectEntities
+);
+
+const emptyProject: Project = {
+  id: null,
+  title: '',
+  details: '',
+  percentComplete: 0,
+  approved: false,
+  customerId: null
+};
+
+export const selectCurrentProject = createSelector(
+  selectProjectEntities,
+  selectCurrentProjectId,
+  (projectEntities, projectId) => {
+    return projectId ? projectEntities[projectId] : emptyProject;
+  }
 );
 
 export const selectAllProjects = createSelector(
@@ -46,4 +68,23 @@ export const selectCustomersState = createFeatureSelector<
 export const selectAllCustomers = createSelector(
   selectCustomersState,
   fromCustomers.selectAllCustomers
+);
+
+export const selectCustomerProjects = createSelector(
+  selectAllCustomers,
+  selectAllProjects,
+  (customers, projects) => {
+    debugger;
+    return customers.map(customer => {
+      return Object.assign(
+        {},
+        {
+          ...customer,
+          projects: projects.filter(
+            project => project.customerId === customer.id
+          )
+        }
+      );
+    });
+  }
 );
