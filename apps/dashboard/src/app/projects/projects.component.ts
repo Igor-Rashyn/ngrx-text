@@ -10,7 +10,9 @@ import {
   ProjectsState,
   ProjectCreate,
   ProjectUpdate,
-  ProjectDelete
+  ProjectDelete,
+  ProjectsIndex,
+  initialProjects
 } from '@workshop/core-data';
 import { Store, select } from '@ngrx/store';
 
@@ -41,7 +43,8 @@ export class ProjectsComponent implements OnInit {
   ) {
     this.projects$ = store.pipe(
       select('projects'),
-      map((projectState: ProjectsState) => projectState.projects)
+      map(data => data.entities),
+      map(data => Object.keys(data).map(k => data[k]))
     );
   }
 
@@ -68,7 +71,7 @@ export class ProjectsComponent implements OnInit {
   }
 
   getProjects() {
-    // this.projects$ = this.projectsService.all();
+    this.store.dispatch(new ProjectsIndex(initialProjects));
   }
 
   saveProject(project) {
@@ -82,18 +85,15 @@ export class ProjectsComponent implements OnInit {
   createProject(project) {
     this.store.dispatch(new ProjectCreate(project));
     this.ns.emit('Project created!');
-    this.getProjects();
   }
 
   updateProject(project) {
     this.store.dispatch(new ProjectUpdate(project));
     this.ns.emit('Project saved!');
-    this.getProjects();
   }
 
   deleteProject(project) {
-    this.store.dispatch(new ProjectDelete(project));
+    this.store.dispatch(new ProjectDelete(project.id));
     this.ns.emit('Project deleted!');
-    this.getProjects();
   }
 }

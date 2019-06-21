@@ -1,4 +1,7 @@
-export { ProjectsState } from './lib/state/projects/projects.reducer';
+export {
+  ProjectsState,
+  initialProjects
+} from './lib/state/projects/projects.reducer';
 export { AuthGuardService } from './lib/auth/auth-guard.service';
 export { AuthService } from './lib/auth/auth.service';
 export { CoreDataModule } from './lib/core-data.module';
@@ -14,5 +17,6 @@ export {
   ProjectCreate,
   ProjectDelete,
   ProjectUpdate,
-  ProjectSelect
+  ProjectSelect,
+  ProjectsIndex
 } from './lib/state/projects/projects.actions';
